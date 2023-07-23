@@ -5,12 +5,14 @@ const mongoose = require("mongoose");
 //  Middleware
 
 const productRouter = require("./routes/Products");
-
-
+const CategoriesRouter = require("./routes/Categories");
+const brandsRouter = require("./routes/Brands");
 
 server.use(express.json());
 
 server.use("/products", productRouter.router);
+server.use("/categories", CategoriesRouter.router);
+server.use("/brands", brandsRouter.router);
 
 main().catch((err) => console.log(err));
 
