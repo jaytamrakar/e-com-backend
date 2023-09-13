@@ -9,6 +9,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
+const cookieParser = require("cookie-parser");
 
 //  Middleware
 
@@ -20,17 +21,23 @@ const authRouter = require("./routes/Auth");
 const cartRouter = require("./routes/Carts");
 const ordersRouter = require("./routes/Orders");
 const { User } = require("./model/User");
-const { isAuth, sanitizeUser } = require("./services/common");
+const { isAuth, sanitizeUser, cookieExtractor } = require("./services/common");
 const LocalStrategy = require("passport-local").Strategy;
 
 const SECRET_KEY = "secret";
 
 const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = SECRET_KEY;
 
 // morgen for logging the routes
-server.use(morgan("combined"));
+// server.use(morgan("combined"));
+
+// static hosting for frontend
+server.use(express.static("build"));
+
+// for parsing the cookie values
+server.use(cookieParser());
 
 server.use(
   session({
@@ -82,7 +89,7 @@ passport.use(
             return done(null, false, { message: "invalid credentials" });
           } else {
             const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
-            done(null, token);
+            done(null, { token });
           }
         }
       );
@@ -96,7 +103,7 @@ passport.use(
   "jwt",
   new JwtStrategy(opts, async function (jwt_payload, done) {
     try {
-      const user = await User.findOne({ id: jwt_payload.sub });
+      const user = await User.findById(jwt_payload.id);
       if (user) {
         return done(null, sanitizeUser(user));
       } else {
