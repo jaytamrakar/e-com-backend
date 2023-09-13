@@ -16,7 +16,6 @@ exports.createOrder = async (req, res) => {
     const doc = await order.save();
     res.status(201).json(doc);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -27,7 +26,6 @@ exports.deleteOrder = async (req, res) => {
     const order = await Order.findByIdAndDelete(id);
     res.status(200).json(order);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -40,7 +38,6 @@ exports.updateOrder = async (req, res) => {
     });
     res.status(200).json(order);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -72,7 +69,6 @@ exports.fetchAllOrders = async (req, res) => {
     res.set("X-Total-Count", totalDocs);
     res.status(200).json(docs);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };

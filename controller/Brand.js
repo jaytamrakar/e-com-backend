@@ -7,7 +7,6 @@ exports.createBrand = async (req, res) => {
     const doc = await brand.save();
     res.status(201).json(doc);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };

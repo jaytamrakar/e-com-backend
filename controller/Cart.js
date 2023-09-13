@@ -12,13 +12,12 @@ exports.fetchCartByUser = async (req, res) => {
 
 exports.addToCart = async (req, res) => {
   const { id } = req.user;
-  const cart = new Cart({ ...req.body, user: { id } });
+  const cart = new Cart({ ...req.body, user: id });
   try {
     const doc = await cart.save();
     const result = await doc.populate("product");
     res.status(201).json(result);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -29,7 +28,6 @@ exports.deleteCart = async (req, res) => {
     const doc = await Cart.findByIdAndDelete(id);
     res.status(200).json(doc);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -43,7 +41,6 @@ exports.updateCart = async (req, res) => {
     const result = await cart.populate("product");
     res.status(200).json(result);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
