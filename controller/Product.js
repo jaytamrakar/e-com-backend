@@ -7,7 +7,7 @@ exports.createProduct = async (req, res) => {
     const doc = await product.save();
     res.status(201).json(doc);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -57,7 +57,7 @@ exports.fetchAllProducts = async (req, res) => {
     res.set("X-Total-Count", totalDocs);
     res.status(200).json(docs);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -68,7 +68,7 @@ exports.fetchAllProductById = async (req, res) => {
     const product = await Product.findById(id);
     res.status(200).json(product);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(400).json(error);
   }
 };
@@ -81,7 +81,7 @@ exports.updateProduct = async (req, res) => {
     });
     res.status(200).json(product);
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(400).json(error);
   }
 };
