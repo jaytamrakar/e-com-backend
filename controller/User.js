@@ -2,6 +2,7 @@ const { User } = require("../model/User");
 
 exports.fetchUserById = async (req, res) => {
   const { id } = req.user;
+  // console.log(id);
   try {
     const user = await User.findById(id);
     res.status(200).json({
@@ -9,22 +10,18 @@ exports.fetchUserById = async (req, res) => {
       addresses: user.addresses,
       email: user.email,
       role: user.role,
-      orders: user.orders,
     });
   } catch (error) {
-    res.status(404).json(error);
+    res.status(400).json(error);
   }
 };
 
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    const user = await User.findByIdAndUpdate(id, req.body, { new: true });
     res.status(200).json(user);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };

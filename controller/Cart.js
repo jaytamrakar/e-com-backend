@@ -4,9 +4,10 @@ exports.fetchCartByUser = async (req, res) => {
   const { id } = req.user;
   try {
     const cartItems = await Cart.find({ user: id }).populate("product");
+
     res.status(200).json(cartItems);
   } catch (error) {
-    res.status(404).json(error);
+    res.status(400).json(error);
   }
 };
 
@@ -22,7 +23,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-exports.deleteCart = async (req, res) => {
+exports.deleteFromCart = async (req, res) => {
   const { id } = req.params;
   try {
     const doc = await Cart.findByIdAndDelete(id);
@@ -39,6 +40,7 @@ exports.updateCart = async (req, res) => {
       new: true,
     });
     const result = await cart.populate("product");
+
     res.status(200).json(result);
   } catch (error) {
     res.status(400).json(error);

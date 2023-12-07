@@ -11,10 +11,9 @@ const virtual = cartSchema.virtual("id");
 virtual.get(function () {
   return this._id;
 });
-
 cartSchema.set("toJSON", {
   virtuals: true,
-  virsonKeys: false,
+  versionKey: false,
   transform: function (doc, ret) {
     delete ret._id;
   },

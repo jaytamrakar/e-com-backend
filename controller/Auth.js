@@ -1,9 +1,8 @@
 const { User } = require("../model/User");
 const crypto = require("crypto");
 const { sanitizeUser } = require("../services/common");
-const jwt = require("jsonwebtoken");
-
 const SECRET_KEY = "secret";
+const jwt = require("jsonwebtoken");
 
 exports.createUser = async (req, res) => {
   try {
@@ -19,12 +18,12 @@ exports.createUser = async (req, res) => {
         const doc = await user.save();
         req.login(sanitizeUser(doc), (error) => {
           if (error) {
-            res.status(404).json(error);
+            res.status(400).json(error);
           } else {
             const token = jwt.sign(sanitizeUser(doc), SECRET_KEY);
             res
               .cookie("jwt", token, {
-                expires: new Date(Date.now() + 360000),
+                expires: new Date(Date.now() + 3600000),
                 httpOnly: true,
               })
               .status(201)
@@ -41,7 +40,7 @@ exports.createUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
   res
     .cookie("jwt", req.user.token, {
-      expires: new Date(Date.now() + 360000),
+      expires: new Date(Date.now() + 3600000),
       httpOnly: true,
     })
     .status(201)
